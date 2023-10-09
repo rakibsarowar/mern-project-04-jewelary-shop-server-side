@@ -36,7 +36,7 @@ async function run() {
     });
 
     // Created Database -----------------------------------------------------
-    const toyCollection = client.db('toysDB').collection('toys');
+    const toyCollection = client.db('jewelryDB').collection('jewelrys');
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
