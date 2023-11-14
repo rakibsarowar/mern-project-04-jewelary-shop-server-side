@@ -37,7 +37,9 @@ async function run() {
 
     // Created Database -----------------------------------------------------
     const toyCollection = client.db('jewelryDB').collection('jewelrys');
+    const locketCollection = client.db('jewelryDB').collection('locket');
 
+    
     // Get Data from server ---------------------------------------------------------
     app.get('/jewelrys', async (req, res) => {
         let cursor = toyCollection.find();
@@ -52,12 +54,10 @@ async function run() {
         res.send(result);
       });
 
-
-
-
-
-
-
+      app.get('/locket', async(req, res) =>{
+        const result = await locketCollection.find().toArray();
+        res.send(result);
+    })
 
 
 
