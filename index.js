@@ -39,29 +39,41 @@ async function run() {
     const toyCollection = client.db('jewelryDB').collection('jewelrys');
     const locketCollection = client.db('jewelryDB').collection('locket');
 
-    
+
     // Get Data from server ---------------------------------------------------------
     app.get('/jewelrys', async (req, res) => {
-        let cursor = toyCollection.find();
-  
-        if (req.query.sort === 'asc') {
-          cursor = cursor.sort({ price: 1 });
-        } else if (req.query.sort === 'desc') {
-          cursor = cursor.sort({ price: -1 });
-        }
-  
-        const result = await cursor.toArray();
-        res.send(result);
-      });
+      let cursor = toyCollection.find();
 
-      app.get('/locket', async(req, res) =>{
-        const result = await locketCollection.find().toArray();
-        res.send(result);
+      if (req.query.sort === 'asc') {
+        cursor = cursor.sort({ price: 1 });
+      } else if (req.query.sort === 'desc') {
+        cursor = cursor.sort({ price: -1 });
+      }
+
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get('/locket', async (req, res) => {
+      const result = await locketCollection.find().toArray();
+      res.send(result);
     })
 
+    // Update data in server ----------------------------------------------------
+    app.get("/locket/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await locketCollection.findOne(query);
+      res.send(result);
+    });
 
+    app.get("/locket/:_id", async (req, res) => {
+      const id = req.params.id;
+      const selectedJewelaryInfo = locket.find(n=> n._id == id)
+      res.send(selectedJewelaryInfo);
+    });
 
-
+  
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
